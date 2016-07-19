@@ -16,7 +16,18 @@ AWESOMENESS = [
 def start_here():
     """Home page."""
 
-    return "Hi! This is the home page."
+    return """
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Homepage</title>
+      </head>
+      <body>
+        <p>This is the home page.</p>
+        <h1><a href="/hello">Hello Page</a></h1>
+      </body>
+    </html>
+    """
 
 
 @app.route('/hello')
@@ -33,6 +44,23 @@ def say_hello():
         <h1>Hi There!</h1>
         <form action="/greet">
           <label>What's your name? <input type="text" name="person"></label>
+          <label>Select a compliment: 
+            <select name="compliment">
+              <option value="smart">Smart</option>
+              <option value="intelligent">Intelligent</option>
+              <option value="clever">Clever</option>
+            </select></label>
+          <input type="submit">
+        </form>
+
+        <form action="/diss">
+          <label>What's your name? <input type="text" name="person"></label>    
+          <label>Select an insult: 
+            <select name="insult">
+              <option value="dumb">Dumb</option>
+              <option value="stupid">Stupid</option>
+              <option value="unintelligent">Unintelligent</option>
+            </select></label>
           <input type="submit">
         </form>
       </body>
@@ -46,7 +74,8 @@ def greet_person():
 
     player = request.args.get("person")
 
-    compliment = choice(AWESOMENESS)
+    # compliment = choice(AWESOMENESS)
+    compliment = request.args.get("compliment")
 
     return """
     <!doctype html>
@@ -59,6 +88,28 @@ def greet_person():
       </body>
     </html>
     """ % (player, compliment)
+
+
+@app.route('/diss')
+def diss_person():
+    """Get user by name."""
+
+    player = request.args.get("person")
+
+    # compliment = choice(AWESOMENESS)
+    insult = request.args.get("insult")
+
+    return """
+    <!doctype html>
+    <html>
+      <head>
+        <title>A Diss</title>
+      </head>
+      <body>
+        Hi %s I think you're %s!
+      </body>
+    </html>
+    """ % (player, insult)
 
 
 if __name__ == '__main__':
